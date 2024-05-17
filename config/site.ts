@@ -18,17 +18,17 @@ export const siteConfig =  {
         },
         {
             title: "Productos",
-            href: "/panel/products",
+            href: "/panel/productos",
             icon: Package,
         },
         {
             title: "Clientes",
-            href: "/panel/customers",
+            href: "/panel/clientes",
             icon: Users2,
         },
         {
             title: "Análiticas",
-            href: "/panel/analytics",
+            href: "/panel/analiticas",
             icon: LineChart,
         }
     ],

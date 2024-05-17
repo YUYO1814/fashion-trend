@@ -21,6 +21,8 @@ type Breadcrumb = {
     href: string;
 }
 
+const knowedRoutes = ["productos", "usuarios", "configuracion", "panel"];
+
 export default function BreadcrumbsSite() {
     const pathname = usePathname();
     const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
@@ -31,6 +33,11 @@ export default function BreadcrumbsSite() {
 
         paths.reduce((acc, path) => {
             const href = `${acc}/${path}`;
+
+            if (!knowedRoutes.includes(path)) {
+                return href;
+            }
+
             breadcrumbs.push({
                 id: (Math.floor(Math.random() * 6) + 1) * path.length,
                 title: capitalize(path),

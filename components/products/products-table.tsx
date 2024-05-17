@@ -5,7 +5,7 @@ import { Product } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { MoreHorizontal, Search } from "lucide-react";
+import { Delete, DeleteIcon, Edit, MoreHorizontal, Search, Trash } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -14,6 +14,10 @@ import AddProductButton from "@/components/products/add-product-button";
 import SheetProvider from "@/components/sheet-provider";
 import { formatCurrency } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import EditProductButton from "./edit-product-button";
+import Link from "next/link";
+import { deleteProduct } from "@/actions/products";
+import { toast } from "sonner";
 
 type ProducstTableProps = {
     products: Product[];
@@ -57,7 +61,7 @@ export default function ProductsTable({ products }: ProducstTableProps) {
                 <CardHeader>
                     <CardTitle>Productos</CardTitle>
                     <CardDescription>
-                        Manage your products and view their sales performance.
+                        Lista de productos de la tienda
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -70,7 +74,7 @@ export default function ProductsTable({ products }: ProducstTableProps) {
                                 <TableHead>Nombre</TableHead>
                                 <TableHead>Estado</TableHead>
                                 <TableHead>Precio</TableHead>
-                                <TableHead className="hidden md:table-cell">
+                                <TableHead className="table-cell">
                                     Disponible
                                 </TableHead>
                                 <TableHead className="hidden md:table-cell">
@@ -90,41 +94,50 @@ export default function ProductsTable({ products }: ProducstTableProps) {
                                                 alt="Product image"
                                                 className="aspect-square rounded-md object-cover"
                                                 height="64"
-                                                src="/placeholder.svg"
+                                                src="/products/reloj.webp"
                                                 width="64"
                                             />
                                         </TableCell>
                                         <TableCell className="font-medium">
-                                            {product.name}
+                                            {product.name.slice(0, 18) + (product.name.length > 18 ? "..." : "")}
                                         </TableCell>
                                         <TableCell>
                                             <Badge variant="outline">{product.status}</Badge>
                                         </TableCell>
                                         <TableCell>{formatCurrency(product.price)}</TableCell>
-                                        <TableCell className="hidden md:table-cell">
+                                        <TableCell className="table-cell">
                                             {product.stock}
                                         </TableCell>
                                         <TableCell className="hidden md:table-cell">
                                             {product.createdAt.toLocaleString().split(",")[0]}
                                         </TableCell>
-                                        <TableCell>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button
-                                                        aria-haspopup="true"
-                                                        size="icon"
-                                                        variant="ghost"
-                                                    >
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                        <span className="sr-only">Toggle menu</span>
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                                                    <DropdownMenuItem>Delete</DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
+                                        <TableCell className="items-center space-x-3">
+                                            <Button
+                                                aria-haspopup="true"
+                                                size="icon"
+                                                variant="ghost"
+                                                asChild
+                                            >
+                                                <Link href={`/panel/productos/${product.id}`}>
+                                                    <Edit className="h-4 w-4" />
+                                                </Link>
+                                            </Button>
+                                            <Button
+                                                aria-haspopup="true"
+                                                size="icon"
+                                                variant="destructive"
+                                                onClick={async() => {
+                                                    const result = await deleteProduct(product.id);
+
+                                                    if (result.error) {
+                                                        return toast.error(result.message);
+                                                    }
+
+                                                    toast.success(result.message);
+                                                }}
+                                            >
+                                                <Trash className="h-4 w-4" />
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))
