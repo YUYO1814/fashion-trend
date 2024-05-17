@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Heart, ShoppingCart, User } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function StoreLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (
@@ -36,8 +37,11 @@ export default function StoreLayout({ children }: Readonly<{ children: React.Rea
                             size="icon"
                             variant="outline"
                             className="self-end"
+                            asChild
                         >
-                            <User className="size-4" />
+                            <Link href="/panel/productos">
+                                <User className="size-4" />
+                            </Link>
                         </Button>
                     </section>
                 </nav>

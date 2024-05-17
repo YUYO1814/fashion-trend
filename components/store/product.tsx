@@ -13,10 +13,11 @@ export default function Product({ product }: ProductProps) {
         <Card className="cursor-pointer h-fit">
             <CardHeader>
                 <Image
-                    src="/products/reloj.webp"
+                    src={`/products/${product.image}`}
                     alt={product.name}
                     width={200}
                     height={200}
+                    className="object-contain w-full h-48"
                 />
             </CardHeader>
             <CardContent className="bg-muted/40 py-4 flex flex-col gap-2 justify-between">

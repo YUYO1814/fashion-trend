@@ -14,7 +14,6 @@ import AddProductButton from "@/components/products/add-product-button";
 import SheetProvider from "@/components/sheet-provider";
 import { formatCurrency } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import EditProductButton from "./edit-product-button";
 import Link from "next/link";
 import { deleteProduct } from "@/actions/products";
 import { toast } from "sonner";
@@ -94,7 +93,7 @@ export default function ProductsTable({ products }: ProducstTableProps) {
                                                 alt="Product image"
                                                 className="aspect-square rounded-md object-cover"
                                                 height="64"
-                                                src="/products/reloj.webp"
+                                                src={`/products/${product.image}`}
                                                 width="64"
                                             />
                                         </TableCell>
